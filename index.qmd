@@ -1,0 +1,100 @@
+---
+title: "Tarea 3"
+author: "Santiago Rodriguez y Sofía Briones"
+format: html
+lang: es
+toc: true
+editor: visual
+theme: flatly
+---
+
+## Introducción
+Se trabajó con el lenguaje de programación R y se encontrara en el documento las tablas de información de datos clinícos, se manejan diferentes escalas en ascendentes y descendentes, además de un promedio. Se extrajó los [datos del enlace](https://github.com/gf0604-procesamientodatosgeograficos/2024-i/blob/main/datos/bmc/heart_failure_clinical_records_dataset.csv) suminstrado por el docente. 
+
+# Carga de paquetes
+
+```{r}
+#| label: Carga-paquetes
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(knitr)
+
+```
+
+# Carga de datos
+
+```{r}
+#| label: carga-datos
+#| message: false
+#| warning: false
+
+datos_clinicos <- read.csv("heart_failure_clinical_records_dataset.csv")
+
+```
+
+# Tablas
+
+## Tabla 1
+
+```{r}
+#| label: tablas1
+#| message: false
+#| warning: false
+
+datos_clinicos |> 
+  filter(age > 75, sex == 0) |>
+  select(sex, age, diabetes, high_blood_pressure, serum_creatinine) |> 
+  arrange(desc(age)) |>
+  kable()
+  
+```
+
+## Tabla 2
+
+```{r}
+#| label: tablas2
+#| message: false
+#| warning: false
+
+datos_clinicos |> 
+  filter(sex == 1) |>
+  select(sex, age, diabetes, smoking, ejection_fraction) |> 
+  arrange(age) |>
+  signif(digits = 2) |>
+  kable()
+  
+```
+
+## Tabla 3
+
+```{r}
+#| label: tablas3
+#| message: false
+#| warning: false
+
+datos_clinicos |> group_by(diabetes) |>
+  summarise(ejection_fraction_mean = mean(ejection_fraction, na.rm = TRUE)) |>
+    
+kable()
+  
+  
+
+
+```
+
+## Tabla 4
+
+```{r}
+#| label: tablas4
+#| message: false
+#| warning: false
+
+datos_clinicos |>  filter(sex == 1, DEATH_EVENT == 1 ) |>
+  summarise(EdadMenor = min(age, na.rm = TRUE)) |>
+kable()
+```
+
+# Bibliografía 
+[Heart_failure_clinical_records_dataset](https://github.com/gf0604-procesamientodatosgeograficos/2024-i/blob/main/datos/bmc/heart_failure_clinical_records_dataset.csv)
